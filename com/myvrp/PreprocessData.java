@@ -1,0 +1,98 @@
+package com.myvrp;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+public class PreprocessData{
+
+
+    public static double[][] getdistanceMatrix(String filePath){
+        Map<Integer, int[]> customerData = parseCustomerData(filePath);
+
+        int msize = customerData.size();
+
+        double[][] distanceMatrix = new double[msize][msize];
+
+        distanceMatrix = createDistanceMatrix(customerData);
+
+        return distanceMatrix;
+    }
+
+    public static void main(String[] args) {
+        String filePath = "com\\myvrp\\C101.txt";  // Replace with the appropriate path
+        Map<Integer, int[]> customerData = parseCustomerData(filePath);
+
+        double[][] distanceMatrix = createDistanceMatrix(customerData);
+        
+        
+
+        for(int i=0;i<distanceMatrix.length;i++){
+            for(int j=0;j<distanceMatrix.length;j++){
+                System.out.print(distanceMatrix[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+
+
+    public static double[][] createDistanceMatrix(Map<Integer, int[]> customerData) {
+        int size = customerData.size();
+        double[][] distanceMatrix = new double[size][size];
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i != j) {
+                    int[] coord1 = customerData.get(i);
+                    int[] coord2 = customerData.get(j);
+                    distanceMatrix[i][j] = computeDistance(coord1, coord2);
+                }
+            }
+        }
+
+        return distanceMatrix;
+    }
+
+
+    
+
+
+    public static double computeDistance(int[] coord1, int[] coord2) {
+
+        double dx = coord2[0] - coord1[0];
+        double dy = coord2[1] - coord1[1];
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public static Map<Integer, int[]> parseCustomerData(String filePath) { //create a map of customer data
+        Map<Integer, int[]> customerData = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            boolean isCustomerSection = false;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().equals("CUSTOMER")) {
+                    isCustomerSection = true;
+                    reader.readLine();  // Skipping the next line with column headers
+                    continue;
+                }
+
+                if (isCustomerSection && !line.trim().isEmpty()) {
+                    String[] parts = line.trim().split("\\s+");
+                    int custNo = Integer.parseInt(parts[0]);
+                    int xCoord = Integer.parseInt(parts[1]);
+                    int yCoord = Integer.parseInt(parts[2]);
+                    customerData.put(custNo, new int[]{xCoord, yCoord});
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return customerData;
+    }
+
+}
