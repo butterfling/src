@@ -20,20 +20,36 @@ public class PreprocessData{
         return distanceMatrix;
     }
 
+
+    public static Map<Integer, int[]> getCustomerData(String filePath){
+        Map<Integer, int[]> customerData = parseCustomerData(filePath);
+
+   
+
+        return customerData;
+    }
+
     public static void main(String[] args) {
-        String filePath = "com\\myvrp\\C101.txt";  // Replace with the appropriate path
+        String filePath = "C101.txt";  // Replace with the appropriate path
         Map<Integer, int[]> customerData = parseCustomerData(filePath);
 
         double[][] distanceMatrix = createDistanceMatrix(customerData);
         
+        // for(Map.Entry<Integer, int[]> entry : customerData.entrySet()){
+        //     System.out.println(entry.getKey()+" "+entry.getValue()[0]+" "+entry.getValue()[1]+" "+entry.getValue()[2]);
+
+        //     System.out.println();
+
+            
+        // }
         
 
-        for(int i=0;i<distanceMatrix.length;i++){
-            for(int j=0;j<distanceMatrix.length;j++){
-                System.out.print(distanceMatrix[i][j]+" ");
-            }
-            System.out.println();
-        }
+        // for(int i=0;i<distanceMatrix.length;i++){
+        //     for(int j=0;j<distanceMatrix.length;j++){
+        //         System.out.print(distanceMatrix[i][j]+" ");
+        //     }
+        //     System.out.println();
+        // }
     }
 
 
@@ -84,7 +100,8 @@ public class PreprocessData{
                     int custNo = Integer.parseInt(parts[0]);
                     int xCoord = Integer.parseInt(parts[1]);
                     int yCoord = Integer.parseInt(parts[2]);
-                    customerData.put(custNo, new int[]{xCoord, yCoord});
+                    int demand = Integer.parseInt(parts[3]);
+                    customerData.put(custNo, new int[]{xCoord, yCoord, demand});
                 }
             }
 
@@ -92,7 +109,15 @@ public class PreprocessData{
             e.printStackTrace();
         }
 
-        return customerData;
+        return customerData; //has customer id as key and x,y coordinates as value
+                            //need to add demand(weight of each customer) to this map
+
     }
+
+    //need to add demand(weight of each customer) to this map
+
+    // 0 -> {x,y} -> {x,y,demand}
+    
+
 
 }

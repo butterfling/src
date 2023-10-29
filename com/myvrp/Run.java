@@ -1,3 +1,4 @@
+package com.myvrp;
 
 
 import java.io.BufferedReader;
@@ -22,7 +23,7 @@ public class Run {
     Particle particle;
 
     public Run(String filePath) throws Exception {
-        this.distanceMatrix = com.myvrp.PreprocessData.getdistanceMatrix(filePath);
+        this.distanceMatrix = PreprocessData.getdistanceMatrix(filePath);
         this.particle = new Particle(distanceMatrix.length);
     }
     
@@ -37,7 +38,7 @@ public class Run {
         totalDistance += distanceMatrix[prevCustomer][0];  // returning to depot
         return totalDistance;
     }
-
+    
     public static void main(String[] args) throws Exception {
         Run calculator = new Run("com\\myvrp\\C101.txt");
         
