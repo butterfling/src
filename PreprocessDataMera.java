@@ -1,11 +1,11 @@
-package com.myvrp;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PreprocessData{
+class PreprocessDataMera{
 
 
     public static double[][] getdistanceMatrix(String filePath){
@@ -24,32 +24,10 @@ public class PreprocessData{
     public static Map<Integer, int[]> getCustomerData(String filePath){
         Map<Integer, int[]> customerData = parseCustomerData(filePath);
 
-   
+
+        //traverse through this customerData and print
 
         return customerData;
-    }
-
-    public static void main(String[] args) {
-        String filePath = "C101.txt";  // Replace with the appropriate path
-        Map<Integer, int[]> customerData = parseCustomerData(filePath);
-
-        double[][] distanceMatrix = createDistanceMatrix(customerData);
-        
-        // for(Map.Entry<Integer, int[]> entry : customerData.entrySet()){
-        //     System.out.println(entry.getKey()+" "+entry.getValue()[0]+" "+entry.getValue()[1]+" "+entry.getValue()[2]);
-
-        //     System.out.println();
-
-            
-        // }
-        
-
-        // for(int i=0;i<distanceMatrix.length;i++){
-        //     for(int j=0;j<distanceMatrix.length;j++){
-        //         System.out.print(distanceMatrix[i][j]+" ");
-        //     }
-        //     System.out.println();
-        // }
     }
 
 
@@ -72,8 +50,6 @@ public class PreprocessData{
 
 
     
-
-
     public static double computeDistance(int[] coord1, int[] coord2) {
 
         double dx = coord2[0] - coord1[0];
@@ -114,6 +90,7 @@ public class PreprocessData{
 
     }
 
+    
     //need to add demand(weight of each customer) to this map
 
     // 0 -> {x,y} -> {x,y,demand}

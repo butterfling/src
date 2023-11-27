@@ -1,15 +1,20 @@
-package com.myvrp;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
+// Remove the import statement
+// import PreprocessData.*;
+
 
 public class Fitness {
 
 
-    List<Integer> initializeRandomIndividual(){
+    VehicleDataTera vehicle = new VehicleDataTera();
+
+
+    static List<Integer> initializeRandomIndividual(Map<Integer,int[]> customer_data){
 
         List<Integer> individual = new ArrayList<Integer>(customer_data.keySet());
         Collections.shuffle(individual);
@@ -18,19 +23,9 @@ public class Fitness {
 
     }
 
+    
 
-    List<Integer> random_individual = initializeRandomIndividual();
-
-
-    VehicleData vehicleData = new VehicleData();
-
-    double[][] distanceMatrix = PreprocessData.getdistanceMatrix("C101.txt");
-
-    Map<Integer,int[]> customer_data = PreprocessData.getCustomerData("C101.txt");
-
-    HashMap<Integer, Integer> vehicle_data = vehicleData.vehicleData(25, 40, 80);
-
-    public ArrayList<ArrayList<Integer>> possibleRoutes(List<Integer> random_individual, Map<Integer,int[]> customer_data, HashMap<Integer,Integer> vehicle_data){
+    public static ArrayList<ArrayList<Integer>> possibleRoutes(List<Integer> random_individual, Map<Integer,int[]> customer_data, HashMap<Integer,Integer> vehicle_data){
 
         ArrayList<ArrayList<Integer>> route = new ArrayList<ArrayList<Integer>>();
 
@@ -82,13 +77,12 @@ public class Fitness {
     }
 
 
-    public Map<Double,Double> fitness(List<Integer> random_individual, Map<Integer,int[]> customer_data){
+    public static Map<Double, Double> fitness(List<Integer> random_individual, Map<Integer, int[]> customer_data, double[][] distanceMatrix, HashMap<Integer, Integer> vehicle_data) {
 
-        List<Double> result = new ArrayList<Double>();
-
+        
         double transport_cost = 10.0;
 
-        int vehicle_setup_cost = 0;
+        int vehicle_setup_cost = 50;
 
         ArrayList<ArrayList<Integer>> route_instance = possibleRoutes(random_individual, customer_data, vehicle_data);
 
@@ -138,7 +132,7 @@ public class Fitness {
 
                 total_cost += sub_route_transport_cost;
 
-            }
+            } //end of route_instance   (all set of sub_routes are traversed)
 
             fitness_value =  100000.0 /total_cost;
 
@@ -151,4 +145,22 @@ public class Fitness {
 
         return fitness_map; //{fitness_value:total_cost}
     } 
+
+
+    public static void main(String args[]){
+        // Fitness fitness = new Fitness();
+
+        double[][] distanceMatrix = PreprocessDataMera.getdistanceMatrix("C101.txt");
+
+        Map<Integer,int[]> customer_data = PreprocessDataMera.getCustomerData("C101.txt");
+
+        List<Integer> random_individual = initializeRandomIndividual(customer_data);
+
+        HashMap<Integer, Integer> vehicle_data = VehicleDataTera.vehicleData;
+
+        Map<Double, Double> result = fitness(random_individual,customer_data,distanceMatrix,vehicle_data);
+
+        System.out.println(result);
+            // System.out.println(fitness.fitness(fitness.random_individual,fitness.customer_data));
+    }
 }
